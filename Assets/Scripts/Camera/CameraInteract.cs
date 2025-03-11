@@ -44,21 +44,44 @@ public class CameraInteract : MonoBehaviour
             if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, interactingLayer))
             {
 
-                if (ControlPanel.Instance.currentOrder != ControlPanel.Order.None)
-                {
-                    GiveOrder();
-                }
 
                 if (hit.transform.gameObject.layer != 6)
+                {
+                    OperatorManager.Instance.PlayerUnselectOperator();
                     return;
 
-                ClickedInteractable(hit.transform.parent.gameObject.GetComponent<I_Interactable>());
+                }
 
+                ClickedInteractable(hit.transform.parent.gameObject.GetComponent<I_Interactable>());
 
             }
             else
             {
-                
+                OperatorManager.Instance.PlayerUnselectOperator();
+            }
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, interactingLayer))
+            {
+                I_Interactable interactable = hit.transform.parent.gameObject.GetComponent<I_Interactable>();
+
+                if(interactable != null)
+                {
+                    ControlPanel.Instance.SetWorldCursorData(interactable,hit.point);
+                }
+                else
+                {
+                    ControlPanel.Instance.SetWorldCursorData(null, hit.point);
+                }
+
+            }
+            else
+            {
+                ControlPanel.Instance.SetWorldCursorData(null,Vector3.zero);
+
             }
         }
 
@@ -67,7 +90,7 @@ public class CameraInteract : MonoBehaviour
 
     void ClickedInteractable(I_Interactable interactable)
     {
-        Debug.Log("hep");
+        //Debug.Log("hep");
         string interfaceTag = interactable.GetInterfaceTag();
 
         switch (interfaceTag)
@@ -80,22 +103,5 @@ public class CameraInteract : MonoBehaviour
                 break;
         }
     }
-
-    void GiveOrder()
-    {
-        switch (ControlPanel.Instance.currentOrder)
-        {
-            case ControlPanel.Order.None:
-                break;
-            case ControlPanel.Order.Reposition:
-                break;
-            case ControlPanel.Order.HoldAimAt:
-                break;
-            case ControlPanel.Order.AimAtDirection:
-                break;
-        }
-    }
-
-
 
 }

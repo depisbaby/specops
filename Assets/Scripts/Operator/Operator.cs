@@ -40,4 +40,13 @@ public class Operator : MonoBehaviour, I_Interactable
             visible = true;
         }
     }
+
+    #region Orders
+
+    public void RepositionTo()
+    {
+
+    }
+
+    #endregion
 }

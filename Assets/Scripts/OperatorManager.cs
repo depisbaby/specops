@@ -41,4 +41,28 @@ public class OperatorManager : MonoBehaviour
         selectedOperator = _operator;
     }
 
+    public void PlayerUnselectOperator()
+    {
+        selectedOperator = null;
+    }
+
+
+    #region Orders
+    public void ClearAim(Operator _operator)
+    {
+
+    }
+
+    public void HoldPosition(Operator _operator)
+    {
+
+    }
+
+    public void RepositionOperator(Operator _operator, Vector3 position)
+    {
+
+    }
+
+    #endregion
+
 }
