@@ -29,12 +29,14 @@ public class ControlPanel : MonoBehaviour
     public Image[] wheelButtons;
     public Action[] definedActions;
 
-    [HideInInspector] public int activeWheelButton;
+    public int activeWheelButton;
 
     private I_Interactable selectedInteractable;
     private Vector3 worldCursorPoint;
     private bool worldCursorDataSent;
     private List<Action> currentActions = new List<Action>();
+
+    public GameObject _3DPointPing;
 
     [System.Serializable]
     public struct Action
@@ -81,21 +83,30 @@ public class ControlPanel : MonoBehaviour
         switch (action.name)
         {
             case "Clear aim":
-                
+                OperatorManager.Instance.ClearAim(OperatorManager.Instance.selectedOperator);
                 break;
 
             case "Hold position":
-                Debug.Log("Hold position");
+                OperatorManager.Instance.HoldPosition(OperatorManager.Instance.selectedOperator);
                 break;
 
             case "Reposition":
                 if (worldCursorPoint == Vector3.zero)
                     break;
+                GameObject go = Instantiate(_3DPointPing);
+                go.transform.position = worldCursorPoint;
                 OperatorManager.Instance.RepositionOperator(OperatorManager.Instance.selectedOperator, worldCursorPoint);
                 break;
 
-            case "Aim on point":
-                Debug.Log("Aim on point");
+            case "Aim at point":
+                if (worldCursorPoint == Vector3.zero)
+                {
+                    Debug.Log("HHADHADH");
+                    break;
+                }
+                GameObject go1 = Instantiate(_3DPointPing);
+                go1.transform.position = worldCursorPoint;
+                OperatorManager.Instance.AimAtPoint(OperatorManager.Instance.selectedOperator, worldCursorPoint);
                 break;
 
             case "Aim at direction":
@@ -131,11 +142,15 @@ public class ControlPanel : MonoBehaviour
         UpdateWheel();
 
         root.SetActive(true);
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
 
     }
 
     void CloseWheel()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         root.SetActive(false);
     }
 

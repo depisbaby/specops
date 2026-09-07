@@ -21,8 +21,8 @@ public class CameraMovement : MonoBehaviour
     #endregion
 
     //[Header("Movement")]
-    public float moveSpeed;
-    public float riseFallSpeed;
+    float moveSpeed;
+    float riseFallSpeed;
 
     public Transform orientation;
 
@@ -34,14 +34,10 @@ public class CameraMovement : MonoBehaviour
 
     Vector3 moveDirection;
 
-    Rigidbody rb;
-
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
         
     }
 
@@ -57,17 +53,15 @@ public class CameraMovement : MonoBehaviour
         }
         else
         {
-            moveSpeed = 8f;
+            moveSpeed = 7f;
         }
 
         MovePlayer();
         Elevation();
-        
     }
 
     private void FixedUpdate()
     {
-        //MovePlayer();
 
     }
     void Inputs()
@@ -78,20 +72,16 @@ public class CameraMovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         fastInput = Input.GetButton("Fast");
 
-        if (Input.GetButtonUp("Fast"))
-        {
-            rb.linearVelocity = Vector3.zero;
-        }
 
         elevationInput = 0;
         if (Input.GetButton("Down"))
         {
-            elevationInput = -2f;
+            elevationInput = -1f;
         }
         
         if (Input.GetButton("Jump"))
         {
-            elevationInput = 2f;
+            elevationInput = 1f;
         }
         
 
@@ -102,13 +92,13 @@ public class CameraMovement : MonoBehaviour
     {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
-        transform.position = transform.position + moveDirection * (moveSpeed * Time.deltaTime);
+        transform.position = transform.position + moveDirection * moveSpeed * Time.unscaledDeltaTime;
 
     }
 
     void Elevation()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y + elevationInput * (moveSpeed * Time.deltaTime), transform.position.z);
+        transform.position = new Vector3(transform.position.x, transform.position.y + elevationInput * moveSpeed * Time.unscaledDeltaTime, transform.position.z);
     }
 
 

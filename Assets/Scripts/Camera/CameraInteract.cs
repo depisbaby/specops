@@ -43,7 +43,7 @@ public class CameraInteract : MonoBehaviour
             RaycastHit hit;
             if(Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, interactingLayer))
             {
-
+                Debug.Log(hit.transform.gameObject.name);
 
                 if (hit.transform.gameObject.layer != 6)
                 {
